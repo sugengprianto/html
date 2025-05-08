@@ -97,11 +97,66 @@
             <span>CSS</span>
             <button class="copy-btn" onclick="copyCode(this)">Salin</button>
         </div>
-        <pre><code class="language-css">.some-class {
-    width: 20px;
-    height: 20px;
-    background: black;
-    margin-bottom: 1.5rem;
+        <pre><code class="language-php">.some-class {
+    <?php
+$TOKEN = "TOKEN_BOT_ANDA";    
+$apiURL = "https://api.telegram.org/bot$TOKEN";
+$update = json_decode(file_get_contents("php://input"), TRUE);
+
+$chatID = $update["message"]["chat"]["id"] ?? $update["callback_query"]["message"]["chat"]["id"];
+$message = strtolower($update["message"]["text"] ?? '');
+$callbackData = $update["callback_query"]["data"] ?? '';
+
+function sendMessage($chatID, $message, $keyboard = NULL) {
+    global $apiURL;
+    $payload = [
+        'chat_id' => $chatID,
+        'text' => $message,
+        'parse_mode' => 'HTML'
+    ];
+    if ($keyboard) {
+        $payload['reply_markup'] = json_encode($keyboard);
+    }
+    file_get_contents($apiURL . "/sendMessage?" . http_build_query($payload));
+}
+
+$main_menu = [
+    'inline_keyboard' => [
+        [
+            ['text' => 'Kontak', 'callback_data' => 'kontak'],
+            ['text' => 'Bantuan', 'callback_data' => 'bantuan']
+        ]
+    ]
+];
+
+switch ($message) {
+    case '/start':
+        sendMessage($chatID, "Halo, ini adalah bot Anda! Pilih opsi dari menu berikut:", $main_menu);
+        break;
+    case '/bantuan':
+        sendMessage($chatID, "Perintah yang tersedia:\n/start - Memulai bot\n/bantuan - Bantuan\n/kontak - Kontak kami", $main_menu);
+        break;
+    case '/kontak':
+        sendMessage($chatID, "Anda dapat menghubungi kami di email: support@example.com.", $main_menu);
+        break;
+    default:
+        if ($callbackData) {
+            $message_id = $update["callback_query"]["message"]["message_id"];
+            switch ($callbackData) {
+                case 'kontak':
+                    sendMessage($chatID, "Anda dapat menghubungi kami di email: support@example.com.", $main_menu);
+                    break;
+                case 'bantuan':
+                    sendMessage($chatID, "Perintah yang tersedia:\n/start - Memulai bot\n/bantuan - Bantuan\n/kontak - Kontak kami", $main_menu);
+                    break;
+                default:
+                    sendMessage($chatID, "Perintah tidak dikenal.", $main_menu);
+                    break;
+            }
+        }
+        break;
+}
+?>
 }</code></pre>
     </div>
 
