@@ -1,92 +1,134 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Contoh Highlight Kode</title>
-
-  <!-- Prism.js CSS (tema gelap seperti di gambar) -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet"/>
-
-  <style>
-    body {
-      font-family: sans-serif;
-      margin: 0;
-      padding: 1rem;
-      background: #1e1e1e;
-      color: #ccc;
-    }
-
-    .code-container {
-      position: relative;
-      margin-bottom: 2rem;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    }
-
-    pre {
-      margin: 0;
-      padding-top: 2.5rem;
-      padding-bottom: 1rem;
-      overflow-x: auto;
-    }
-
-    .copy-button {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: transparent;
-      color: #ccc;
-      border: 1px solid #ccc;
-      padding: 6px 12px;
-      font-size: 0.85rem;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .copy-button:hover {
-      background: #444;
-      border-color: #fff;
-      color: #fff;
-    }
-
-    @media (max-width: 600px) {
-      .copy-button {
-        padding: 5px 10px;
-        font-size: 0.75rem;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Highlight dengan Prism.js</title>
+    
+    <!-- Prism CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet" />
+    <!-- Prism JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-css.min.js"></script>
+    
+    <style>
+        /* Container untuk code block */
+        .code-container {
+            position: relative;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background: #f5f5f5;
+        }
+        
+        /* Tombol salin dengan border berbeda */
+        .copy-btn {
+            position: absolute;
+            right: 12px;
+            top: 12px;
+            padding: 6px 12px;
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #333;
+            transition: all 0.2s ease;
+            z-index: 10;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .copy-btn:hover {
+            background: #f0f0f0;
+            border-color: #d0d0d0;
+        }
+        
+        .copy-btn:active {
+            transform: translateY(1px);
+        }
+        
+        /* Preformatted text styling */
+        pre {
+            margin: 0;
+            padding: 1.5rem;
+            overflow-x: auto;
+            background: #f5f5f5;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+        
+        /* Garis pemisah antara tombol dan kode */
+        .code-header {
+            position: relative;
+            padding: 12px 16px;
+            background: #e8e8e8;
+            border-bottom: 1px solid #ddd;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-size: 0.9rem;
+            color: #555;
+        }
+        
+        /* Responsive untuk mobile */
+        @media (max-width: 768px) {
+            .code-container {
+                border-radius: 6px;
+            }
+            
+            pre {
+                padding: 1rem;
+                font-size: 0.85rem;
+            }
+            
+            .copy-btn {
+                right: 8px;
+                top: 8px;
+                padding: 5px 10px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="code-container">
+        <div class="code-header">
+            CSS
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+        </div>
+        <pre><code class="language-css">.some-class {
+    width: 20px;
+    height: 20px;
+    background: black;
+    margin-bottom: 1.5rem;
+}</code></pre>
+    </div>
 
-  <div class="code-container">
-    <button class="copy-button" onclick="copyCode()">Copy Code</button>
-    <pre><code id="my-code" class="language-css">
-.some-class {
-  width: 20px;
-  height: 20px;
-  background: black;
-  margin-bottom: 1.5rem;
-}
-    </code></pre>
-  </div>
-
-  <!-- Prism.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
-
-  <!-- Copy Code Script -->
-  <script>
-    function copyCode() {
-      const code = document.getElementById("my-code").innerText;
-      navigator.clipboard.writeText(code).then(() => {
-        alert("Kode disalin!");
-      });
-    }
-  </script>
-
+    <script>
+        function copyCode(button) {
+            const container = button.closest('.code-container');
+            const codeBlock = container.querySelector('code');
+            const textToCopy = codeBlock.textContent;
+            
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const originalText = button.textContent;
+                button.textContent = '✓ Tersalin';
+                button.style.background = '#e6f7ee';
+                button.style.borderColor = '#a0e0c0';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '#ffffff';
+                    button.style.borderColor = '#e0e0e0';
+                }, 2000);
+            }).catch(err => {
+                console.error('Gagal menyalin: ', err);
+                button.textContent = '✗ Gagal';
+                setTimeout(() => {
+                    button.textContent = 'Salin';
+                }, 2000);
+            });
+        }
+    </script>
 </body>
 </html>
