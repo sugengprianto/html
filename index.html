@@ -3,78 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code Highlight dengan Garis Pemisah</title>
+    <title>Code Highlight Premium</title>
     
-    <!-- Prism CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet" />
-    <!-- Prism JS -->
+    <!-- Prism CSS dengan tema yang lebih modern -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-coy.min.css" rel="stylesheet" />
+    <!-- Prism JS + plugins -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/line-numbers/prism-line-numbers.min.js"></script>
     
     <style>
-        /* Container utama dengan bingkai */
-        .code-wrapper {
-            position: relative;
-            margin: 1.5rem 0;
-            border-radius: 8px;
-            border: 1px solid #e0e0e0;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            background: white;
+        /* === VARIABEL DESAIN === */
+        :root {
+            --border-color: #e1e4e8;
+            --header-bg: #f6f8fa;
+            --header-text: #24292e;
+            --btn-bg: #ffffff;
+            --btn-border: #d1d5da;
+            --btn-text: #24292e;
+            --btn-hover: #f3f4f6;
+            --success-bg: #f0fff4;
+            --success-border: #34d058;
+            --success-text: #22863a;
+            --error-bg: #ffeef0;
+            --error-border: #d73a49;
+            --error-text: #cb2431;
         }
-        
-        /* Header dengan garis bawah */
+
+        /* === STRUKTUR UTAMA === */
+        .code-premium {
+            position: relative;
+            margin: 1.75rem 0;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            background: white;
+            transition: all 0.2s ease;
+        }
+
+        .code-premium:hover {
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+            border-color: #d0d7de;
+        }
+
+        /* === HEADER === */
         .code-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 10px 16px;
-            background: #f8f8f8;
-            border-bottom: 1px solid #e0e0e0;
+            background: var(--header-bg);
+            border-bottom: 1px solid var(--border-color);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             font-size: 0.9rem;
-            color: #555;
+            font-weight: 500;
+            color: var(--header-text);
         }
-        
-        /* Tombol salin */
+
+        .language-tag {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .language-icon {
+            width: 16px;
+            height: 16px;
+            opacity: 0.8;
+        }
+
+        /* === TOMBOL SALIN === */
         .copy-btn {
             padding: 5px 12px;
-            background: white;
-            border: 1px solid #d0d0d0;
-            border-radius: 4px;
+            background: var(--btn-bg);
+            border: 1px solid var(--btn-border);
+            border-radius: 6px;
             cursor: pointer;
             font-size: 0.85rem;
-            color: #333;
-            transition: all 0.2s ease;
+            font-weight: 500;
+            color: var(--btn-text);
+            transition: all 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
-        
+
         .copy-btn:hover {
-            background: #f0f0f0;
+            background: var(--btn-hover);
+            border-color: #c9cdd3;
         }
-        
-        /* Area kode */
-        pre {
+
+        .copy-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* === AREA KODE === */
+        .code-content {
+            position: relative;
+        }
+
+        pre[class*="language-"] {
             margin: 0;
-            padding: 1.2rem;
+            padding: 1.25rem;
             overflow-x: auto;
             background: white;
             font-size: 0.95rem;
+            border-radius: 0 !important;
         }
-        
-        /* Efek saat berhasil menyalin */
+
+        /* === STATUS TOMBOL === */
         .copy-success {
-            background: #e6f7ee !important;
-            border-color: #a0e0c0 !important;
-            color: #107c41 !important;
+            background: var(--success-bg) !important;
+            border-color: var(--success-border) !important;
+            color: var(--success-text) !important;
         }
-        
-        /* Responsif untuk mobile */
+
+        .copy-error {
+            background: var(--error-bg) !important;
+            border-color: var(--error-border) !important;
+            color: var(--error-text) !important;
+        }
+
+        /* === RESPONSIF === */
         @media (max-width: 768px) {
-            .code-wrapper {
+            .code-premium {
                 border-radius: 6px;
+                margin: 1.25rem 0;
             }
             
-            pre {
+            pre[class*="language-"] {
                 padding: 1rem;
                 font-size: 0.85rem;
             }
@@ -89,97 +148,84 @@
                 font-size: 0.8rem;
             }
         }
+
+        /* === ANIMASI === */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-2px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .code-premium {
+            animation: fadeIn 0.3s ease-out;
+        }
     </style>
 </head>
 <body>
-    <div class="code-wrapper">
+    <div class="code-premium">
         <div class="code-header">
-            <span>CSS</span>
-            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <div class="language-tag">
+                <svg class="language-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 3H20C20.5523 3 21 3.44772 21 4V20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V4C3 3.44772 3.44772 3 4 3Z" stroke="currentColor" stroke-width="2"/>
+                    <path d="M7 8H17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M7 12H17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M7 16H13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span>CSS</span>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this)">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 4V16C8 17.1046 8.89543 18 10 18H18C19.1046 18 20 17.1046 20 16V7C20 6.44772 19.5523 6 19 6H14C12.8954 6 12 5.10457 12 4V4C12 3.44772 11.5523 3 11 3H6C4.89543 3 4 3.89543 4 5V15C4 15.5523 4.44772 16 5 16H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Salin
+            </button>
         </div>
-        <pre><code class="language-php">.some-class {
-    <?php
-$TOKEN = "TOKEN_BOT_ANDA";    
-$apiURL = "https://api.telegram.org/bot$TOKEN";
-$update = json_decode(file_get_contents("php://input"), TRUE);
-
-$chatID = $update["message"]["chat"]["id"] ?? $update["callback_query"]["message"]["chat"]["id"];
-$message = strtolower($update["message"]["text"] ?? '');
-$callbackData = $update["callback_query"]["data"] ?? '';
-
-function sendMessage($chatID, $message, $keyboard = NULL) {
-    global $apiURL;
-    $payload = [
-        'chat_id' => $chatID,
-        'text' => $message,
-        'parse_mode' => 'HTML'
-    ];
-    if ($keyboard) {
-        $payload['reply_markup'] = json_encode($keyboard);
-    }
-    file_get_contents($apiURL . "/sendMessage?" . http_build_query($payload));
-}
-
-$main_menu = [
-    'inline_keyboard' => [
-        [
-            ['text' => 'Kontak', 'callback_data' => 'kontak'],
-            ['text' => 'Bantuan', 'callback_data' => 'bantuan']
-        ]
-    ]
-];
-
-switch ($message) {
-    case '/start':
-        sendMessage($chatID, "Halo, ini adalah bot Anda! Pilih opsi dari menu berikut:", $main_menu);
-        break;
-    case '/bantuan':
-        sendMessage($chatID, "Perintah yang tersedia:\n/start - Memulai bot\n/bantuan - Bantuan\n/kontak - Kontak kami", $main_menu);
-        break;
-    case '/kontak':
-        sendMessage($chatID, "Anda dapat menghubungi kami di email: support@example.com.", $main_menu);
-        break;
-    default:
-        if ($callbackData) {
-            $message_id = $update["callback_query"]["message"]["message_id"];
-            switch ($callbackData) {
-                case 'kontak':
-                    sendMessage($chatID, "Anda dapat menghubungi kami di email: support@example.com.", $main_menu);
-                    break;
-                case 'bantuan':
-                    sendMessage($chatID, "Perintah yang tersedia:\n/start - Memulai bot\n/bantuan - Bantuan\n/kontak - Kontak kami", $main_menu);
-                    break;
-                default:
-                    sendMessage($chatID, "Perintah tidak dikenal.", $main_menu);
-                    break;
-            }
-        }
-        break;
-}
-?>
+        <div class="code-content">
+            <pre class="line-numbers"><code class="language-css">.some-class {
+    width: 20px;
+    height: 20px;
+    background: black;
+    margin-bottom: 1.5rem;
 }</code></pre>
+        </div>
     </div>
 
     <script>
         function copyCode(button) {
-            const wrapper = button.closest('.code-wrapper');
-            const codeBlock = wrapper.querySelector('code');
+            const codeBlock = button.closest('.code-premium').querySelector('code');
             const textToCopy = codeBlock.textContent;
             
+            // Simpan elemen SVG asli
+            const originalSvg = button.innerHTML;
+            
             navigator.clipboard.writeText(textToCopy).then(() => {
-                const originalText = button.textContent;
-                button.textContent = '✓ Tersalin';
+                // Ubah tampilan tombol saat berhasil
+                button.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 13L9 17L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Tersalin!
+                `;
                 button.classList.add('copy-success');
                 
                 setTimeout(() => {
-                    button.textContent = originalText;
+                    button.innerHTML = originalSvg;
                     button.classList.remove('copy-success');
                 }, 2000);
             }).catch(err => {
                 console.error('Gagal menyalin: ', err);
-                button.textContent = '✗ Gagal';
+                button.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2"/>
+                        <path d="M15 9L9 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M9 9L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Gagal
+                `;
+                button.classList.add('copy-error');
+                
                 setTimeout(() => {
-                    button.textContent = 'Salin';
+                    button.innerHTML = originalSvg;
+                    button.classList.remove('copy-error');
                 }, 2000);
             });
         }
