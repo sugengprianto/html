@@ -3,48 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code Highlight Premium</title>
+    <title>Code Highlight Dark Theme</title>
     
-    <!-- Prism CSS dengan tema yang lebih modern -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-coy.min.css" rel="stylesheet" />
-    <!-- Prism JS + plugins -->
+    <!-- Prism CSS tanpa line numbers -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <!-- Prism JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-css.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/line-numbers/prism-line-numbers.min.js"></script>
     
     <style>
-        /* === VARIABEL DESAIN === */
+        /* === VARIABEL WARNA === */
         :root {
-            --border-color: #e1e4e8;
-            --header-bg: #f6f8fa;
-            --header-text: #24292e;
-            --btn-bg: #ffffff;
-            --btn-border: #d1d5da;
-            --btn-text: #24292e;
-            --btn-hover: #f3f4f6;
-            --success-bg: #f0fff4;
-            --success-border: #34d058;
-            --success-text: #22863a;
-            --error-bg: #ffeef0;
-            --error-border: #d73a49;
-            --error-text: #cb2431;
+            --bg-dark: #303133;
+            --header-dark: #2a2a2c;
+            --border-dark: #3d3d3f;
+            --text-light: #e0e0e0;
+            --btn-bg: #3a3a3c;
+            --btn-border: #4a4a4c;
+            --btn-text: #e0e0e0;
+            --btn-hover: #4a4a4c;
+            --success-bg: #1e3a1e;
+            --success-border: #2d5a2d;
+            --error-bg: #3a1e1e;
+            --error-border: #5a2d2d;
         }
 
         /* === STRUKTUR UTAMA === */
-        .code-premium {
+        .code-dark {
             position: relative;
             margin: 1.75rem 0;
             border-radius: 8px;
-            border: 1px solid var(--border-color);
             overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            background: var(--bg-dark);
             transition: all 0.2s ease;
-        }
-
-        .code-premium:hover {
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
-            border-color: #d0d7de;
         }
 
         /* === HEADER === */
@@ -53,12 +45,12 @@
             justify-content: space-between;
             align-items: center;
             padding: 10px 16px;
-            background: var(--header-bg);
-            border-bottom: 1px solid var(--border-color);
+            background: var(--header-dark);
+            border-bottom: 1px solid var(--border-dark);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             font-size: 0.9rem;
             font-weight: 500;
-            color: var(--header-text);
+            color: var(--text-light);
         }
 
         .language-tag {
@@ -67,70 +59,57 @@
             gap: 8px;
         }
 
-        .language-icon {
-            width: 16px;
-            height: 16px;
-            opacity: 0.8;
-        }
-
         /* === TOMBOL SALIN === */
         .copy-btn {
             padding: 5px 12px;
             background: var(--btn-bg);
             border: 1px solid var(--btn-border);
-            border-radius: 6px;
+            border-radius: 4px;
             cursor: pointer;
             font-size: 0.85rem;
             font-weight: 500;
             color: var(--btn-text);
-            transition: all 0.2s cubic-bezier(0.3, 0, 0.5, 1);
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            transition: all 0.2s ease;
         }
 
         .copy-btn:hover {
             background: var(--btn-hover);
-            border-color: #c9cdd3;
-        }
-
-        .copy-btn svg {
-            width: 14px;
-            height: 14px;
+            border-color: #5a5a5c;
         }
 
         /* === AREA KODE === */
-        .code-content {
-            position: relative;
-        }
-
         pre[class*="language-"] {
             margin: 0;
             padding: 1.25rem;
             overflow-x: auto;
-            background: white;
+            background: var(--bg-dark) !important;
             font-size: 0.95rem;
             border-radius: 0 !important;
+        }
+
+        /* Menghilangkan highlight line number */
+        .line-numbers .line-numbers-rows {
+            display: none;
         }
 
         /* === STATUS TOMBOL === */
         .copy-success {
             background: var(--success-bg) !important;
             border-color: var(--success-border) !important;
-            color: var(--success-text) !important;
+            color: #4caf50 !important;
         }
 
         .copy-error {
             background: var(--error-bg) !important;
             border-color: var(--error-border) !important;
-            color: var(--error-text) !important;
+            color: #f44336 !important;
         }
 
         /* === RESPONSIF === */
         @media (max-width: 768px) {
-            .code-premium {
-                border-radius: 6px;
+            .code-dark {
                 margin: 1.25rem 0;
+                border-radius: 6px;
             }
             
             pre[class*="language-"] {
@@ -148,83 +127,47 @@
                 font-size: 0.8rem;
             }
         }
-
-        /* === ANIMASI === */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-2px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .code-premium {
-            animation: fadeIn 0.3s ease-out;
-        }
     </style>
 </head>
 <body>
-    <div class="code-premium">
+    <div class="code-dark">
         <div class="code-header">
             <div class="language-tag">
-                <svg class="language-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4 3H20C20.5523 3 21 3.44772 21 4V20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V4C3 3.44772 3.44772 3 4 3Z" stroke="currentColor" stroke-width="2"/>
-                    <path d="M7 8H17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M7 12H17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M7 16H13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
                 <span>CSS</span>
             </div>
             <button class="copy-btn" onclick="copyCode(this)">
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8 4V16C8 17.1046 8.89543 18 10 18H18C19.1046 18 20 17.1046 20 16V7C20 6.44772 19.5523 6 19 6H14C12.8954 6 12 5.10457 12 4V4C12 3.44772 11.5523 3 11 3H6C4.89543 3 4 3.89543 4 5V15C4 15.5523 4.44772 16 5 16H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
                 Salin
             </button>
         </div>
-        <div class="code-content">
-            <pre class="line-numbers"><code class="language-css">.some-class {
+        <pre><code class="language-css">.some-class {
     width: 20px;
     height: 20px;
     background: black;
     margin-bottom: 1.5rem;
 }</code></pre>
-        </div>
     </div>
 
     <script>
         function copyCode(button) {
-            const codeBlock = button.closest('.code-premium').querySelector('code');
+            const codeBlock = button.closest('.code-dark').querySelector('code');
             const textToCopy = codeBlock.textContent;
             
-            // Simpan elemen SVG asli
-            const originalSvg = button.innerHTML;
-            
             navigator.clipboard.writeText(textToCopy).then(() => {
-                // Ubah tampilan tombol saat berhasil
-                button.innerHTML = `
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5 13L9 17L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    Tersalin!
-                `;
+                const originalText = button.textContent;
+                button.textContent = '✓ Tersalin';
                 button.classList.add('copy-success');
                 
                 setTimeout(() => {
-                    button.innerHTML = originalSvg;
+                    button.textContent = originalText;
                     button.classList.remove('copy-success');
                 }, 2000);
             }).catch(err => {
                 console.error('Gagal menyalin: ', err);
-                button.innerHTML = `
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2"/>
-                        <path d="M15 9L9 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M9 9L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    Gagal
-                `;
+                button.textContent = '✗ Gagal';
                 button.classList.add('copy-error');
                 
                 setTimeout(() => {
-                    button.innerHTML = originalSvg;
+                    button.textContent = 'Salin';
                     button.classList.remove('copy-error');
                 }, 2000);
             });
